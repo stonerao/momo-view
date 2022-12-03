@@ -22,7 +22,9 @@
       <div class="edit-viewer">
         <div class="edit-viewer-cont" @drop="drop" @dragover="allowDrop" :style="viewStyle">
           <div class="edit-viewer-com" :style="item.style" v-for="item in componentItems" :key="item.id">
-            
+            <keep-alive>
+              <component v-bind:is="`e-${item.component.name}`"></component>
+            </keep-alive>
           </div>
         </div>
       </div>
@@ -100,15 +102,16 @@ export default {
     addCom(opts) {
       // 根据名称找到对应组件
       // const com = this.librarys.find(item => item.name === opts.name);
-      console.log(this.librarys)
       if (!this.librarys[opts.type]) return;
       const com = this.librarys[opts.type].find((item) => item.name === opts.name);
-      console.log(com)
+      console.log(com.component.defaultConfig.style)
       this.componentItems.push({
         style: {
+          ...com.component.defaultConfig.style,
           left: opts.x + 'px',
           top: opts.y + 'px'
-        }
+        },
+        component: com
       })
     },
     ...DragEvent
