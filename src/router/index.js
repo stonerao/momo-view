@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/edit'
   },
   {
     path: "/main",

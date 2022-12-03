@@ -1,0 +1,74 @@
+@nav-height: 50px;
+@left-wdth: 300px;
+@border-val: 1px solid #cccccc;
+.edit-nav {
+    position: absolute;
+    top: 0;
+    left: 0; 
+    right: 0;
+    height: @nav-height - 1;
+    border-bottom: @border-val;
+}
+.edit-commons {
+    width: @left-wdth - 1;
+    top: @nav-height;
+    bottom: 0;
+    position: absolute;
+    border-right: @border-val;
+}
+.edit-view{
+    @n-h: 30px;
+    position: absolute;
+    left: @left-wdth;
+    top: @nav-height;
+    bottom: 0;
+    right: 0;
+    .edit-viewer{
+        position: absolute;
+        top: 0;
+        bottom: @n-h;
+        left: 0;
+        right: 0;
+        // overflow: hidden;
+        overflow: auto;
+    }
+    .edit-view-nav{
+        >div{
+            display: inline-block;
+        }
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: @n-h - 1;
+        border-top: @border-val;
+        line-height: @n-h;
+    }
+    .edit-view-inp { 
+        width: 50px; 
+    }
+    .edit-view-text{
+        padding: 0 5px;
+        display: inline;
+        user-select: none;
+    }
+    .edit-viewer-cont{
+        
+    }
+}
+
+
+::-webkit-scrollbar{
+  width: 5px;
+  height: 5px;
+}
+//定义滑块 内阴影+圆角
+::-webkit-scrollbar-thumb{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.3);
+}
+//定义滚动条轨道 内阴影+圆角
+::-webkit-scrollbar-track{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.1);
+}
