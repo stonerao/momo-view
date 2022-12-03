@@ -1,7 +1,7 @@
 import BaseCom from '@/tools/baseCom'
 class InitCom extends BaseCom {
     constructor(config) {
-        
+        super();
     }
 
     /**
@@ -12,6 +12,10 @@ class InitCom extends BaseCom {
         this.config = Utils.copy(config, {
 
         });
+    }
+
+    mounted() {
+        console.log('mou')
     }
 }
 

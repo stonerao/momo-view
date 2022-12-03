@@ -1,3 +1,5 @@
+
+
 @nav-height: 50px;
 @left-wdth: 300px;
 @border-val: 1px solid #cccccc;
@@ -15,6 +17,33 @@
     bottom: 0;
     position: absolute;
     border-right: @border-val;
+
+    .edit-commons-name{
+        line-height: 35px;
+        border-top: @border-val;
+        border-bottom: @border-val;
+        text-indent: 10px;
+        background: #ededed;
+        font-weight: bold;
+    }
+    .edit-coms-icon {
+        width: 100%;
+        height: 70px;
+        font-size: 48px;
+        line-height: 70px;
+        user-select: none;
+    }
+    .edit-coms-box {
+        height: 100px;
+        width: 30%;
+        margin: 0 1.5%;
+        text-align: center;
+    }
+    .edit-coms-main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
 }
 .edit-view{
     @n-h: 30px;
@@ -54,6 +83,9 @@
     }
     .edit-viewer-cont{
         
+    }
+    .edit-viewer-com{
+        position: absolute;
     }
 }
 

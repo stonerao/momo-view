@@ -34,4 +34,9 @@ export default {
         });
         return base;
     },
+
+    // 获取组件ID
+    getComId(type = 'cont') {
+        return `${type}_${Date.now()}`
+    }
 }
