@@ -1,4 +1,4 @@
-
+@import url(./base.less);
 
 @nav-height: 50px;
 @left-wdth: 300px;
@@ -44,7 +44,24 @@
         flex-wrap: wrap;
         justify-content: flex-start;
     }
+
+    .edit-view-head{
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+        background: #dddddd;
+        >div{
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+           
+            &:hover {
+                color: #ff0000
+            }
+        }
+    }
 }
+
 .edit-view{
     @n-h: 30px;
     position: absolute;
@@ -52,6 +69,11 @@
     top: @nav-height;
     bottom: 0;
     right: 0;
+    .edit-viewer-plane{
+        .full;
+        z-index: 10;
+        cursor: pointer;
+    }
     .edit-viewer{
         position: absolute;
         top: 0;
@@ -88,6 +110,7 @@
         position: absolute;
         background: #ededed;
     }
+    
 }
 
 

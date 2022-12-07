@@ -5,23 +5,46 @@
     </div>
     <!-- 组件 -->
     <div class="edit-commons">
-      <div v-for="(item, key) in librarys">
-        <div class="edit-commons-name">{{ key }}</div>
-        <div class="edit-coms-main">
-          <!-- 组件 -->
-          <div draggable="true" @dragstart="drag($event, chart)" class="edit-coms-box" v-for="chart in item" :key="chart.name">
-            <div class="edit-coms-icon iconfont">&#xeb96;</div>
-            <div>{{chart.name}}</div>
+      <div class="edit-view-head">
+        <div :class="navComId === item.id ?'active':''" v-for="item in navComItems" :key="item.id" @click="(navComId = item.id)">{{ item.name }}</div>
+      </div>
+      <div>
+        <!-- 工程 -->
+        <div v-if="(navComId === 0)"></div>
+        <!-- 组件 -->
+        <div v-if="(navComId === 1)">
+          <div v-for="(item, key) in librarys">
+            <div class="edit-commons-name">{{ key }}</div>
+            <div class="edit-coms-main">
+              <!-- 组件 -->
+              <div draggable="true" @dragstart="drag($event, chart)" class="edit-coms-box" v-for="chart in item"
+                :key="chart.name">
+                <div class="edit-coms-icon iconfont">&#xeb96;</div>
+                <div>{{ chart.name }}</div>
+              </div>
+              <!--  -->
+            </div>
           </div>
-          <!--  -->
         </div>
+        <!--  -->
+        <!-- 已添加组件列表 -->
+        <div v-if="(navComId === 2)"></div>
       </div>
     </div>
     <div class="edit-view">
       <!-- 编辑 -->
       <div class="edit-viewer">
         <div class="edit-viewer-cont" @drop="drop" @dragover="allowDrop" :style="viewStyle">
-          <div class="edit-viewer-com" :style="item.style" v-for="item in componentItems" :key="item.id">
+          <div class="edit-viewer-com" 
+          @mousedown="selectComEvent($event, item)" 
+          @mousemove="moveCom($event, item)"
+          @mouseup="moveUpCom($event)"
+          :style="item.style" v-for="item in componentItems" :key="item.id">
+            <!-- 拾取面板 -->
+            <div class="edit-viewer-plane">
+              
+            </div>
+            <!-- 动态添加组件 -->
             <keep-alive>
               <component v-bind:is="`e-${item.component.name}`"></component>
             </keep-alive>
@@ -32,11 +55,13 @@
       <div class="edit-view-nav">
         <div>
           <span class="edit-view-text">宽度：</span>
-          <a-input class="edit-view-inp" v-model:value="config.width" size="small" placeholder="宽度" @change="setConfig(config)"/>
+          <a-input class="edit-view-inp" v-model:value="config.width" size="small" placeholder="宽度"
+            @change="setConfig(config)" />
         </div>
         <div>
           <span class="edit-view-text">长度：</span>
-          <a-input class="edit-view-inp" v-model:value="config.height" size="small" placeholder="高度" @change="setConfig(config)"/>
+          <a-input class="edit-view-inp" v-model:value="config.height" size="small" placeholder="高度"
+            @change="setConfig(config)" />
         </div>
       </div>
     </div>
@@ -47,7 +72,8 @@
 import '@/style/edit.less'
 import Nav from '@/components/edit/nav.vue'
 import library from '@/components/library/index'
-import DragEvent from '@/utils/drag'
+import DragEvent from '@/event/drag'
+import ViewCom from '@/event/viewCom'
 export default {
   data() {
     return {
@@ -61,7 +87,14 @@ export default {
       }, // 预览dom相关配置
       componentItems: [
       ], // 需要渲染的组件
-      librarys: []
+      librarys: [],
+      navComItems: [
+        { name: '工程', id: 0 },
+        { name: '组件', id: 1 },
+        { name: '列表', id: 2 },
+      ],
+      navComId: 1,
+      ...ViewCom.data,
     }
   },
   created() {
@@ -79,8 +112,8 @@ export default {
           case 'width':
             this.viewStyle.width = `${parseInt(opts[key])}px`;
             break;
-          case 'height': 
-          this.viewStyle.height = `${parseInt(opts[key])}px` 
+          case 'height':
+            this.viewStyle.height = `${parseInt(opts[key])}px`
             break;
           default: break;
         }
@@ -114,10 +147,11 @@ export default {
         component: com
       })
     },
-    ...DragEvent
+    ...DragEvent,
+    ...ViewCom.methods
   },
   components: {
     'm-nav': Nav
-  } 
+  }
 }
 </script>

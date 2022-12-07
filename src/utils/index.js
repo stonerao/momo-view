@@ -38,5 +38,11 @@ export default {
     // 获取组件ID
     getComId(type = 'cont') {
         return `${type}_${Date.now()}`
+    },
+
+    clamp(value, min, max) {
+
+        return Math.max(min, Math.min(max, value));
+
     }
 }
