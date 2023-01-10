@@ -33,16 +33,15 @@
     </div>
     <div class="edit-view">
       <!-- 编辑 -->
-      <div class="edit-viewer">
-        <div class="edit-viewer-cont" @drop="drop" @dragover="allowDrop" :style="viewStyle">
+      <div class="edit-viewer main-view" @click="viewMainClick">
+        <div class="edit-viewer-cont main-view" @drop="drop" @dragover="allowDrop" :style="viewStyle">
           <div class="edit-viewer-com" 
           @mousedown="selectComEvent($event, item)" 
           @mousemove="moveCom($event, item)"
           @mouseup="moveUpCom($event)"
           :style="item.style" v-for="item in componentItems" :key="item.id">
             <!-- 拾取面板 -->
-            <div class="edit-viewer-plane">
-              
+            <div :class="{'edit-viewer-plane': selectId === item.id }">
             </div>
             <!-- 动态添加组件 -->
             <keep-alive>
@@ -50,7 +49,10 @@
             </keep-alive>
           </div>
         </div>
+        <!-- v-if="isConfPlane" -->
       </div>
+      
+      <m-conf-plane ref="config-plane"></m-conf-plane>
       <!-- 底部信息 -->
       <div class="edit-view-nav">
         <div>
@@ -74,9 +76,13 @@ import Nav from '@/components/edit/nav.vue'
 import library from '@/components/library/index'
 import DragEvent from '@/event/drag'
 import ViewCom from '@/event/viewCom'
+import Utils from '@/utils/index'
+import ConfigPlane from './configPlane.vue'
+
 export default {
   data() {
     return {
+      comStartNum: 0, // 组件起始数
       config: {
         width: 1920,
         height: 1080
@@ -106,14 +112,13 @@ export default {
   methods: {
     // 根据配置整体更新
     setConfig(opts = this.config) {
-      console.log(opts)
       Object.keys(opts).forEach((key) => {
         switch (key) {
           case 'width':
             this.viewStyle.width = `${parseInt(opts[key])}px`;
             break;
           case 'height':
-            this.viewStyle.height = `${parseInt(opts[key])}px`
+            this.viewStyle.height = `${parseInt(opts[key])}px`;
             break;
           default: break;
         }
@@ -137,21 +142,33 @@ export default {
       // const com = this.librarys.find(item => item.name === opts.name);
       if (!this.librarys[opts.type]) return;
       const com = this.librarys[opts.type].find((item) => item.name === opts.name);
-      console.log(com.component.defaultConfig.style)
-      this.componentItems.push({
+      const config = com.component.defaultConfig;
+      const comId = Utils.getComId(config.type);
+      // const config = com.component.getConfig('config');
+      const option = {
         style: {
-          ...com.component.defaultConfig.style,
+          ...config.style,
           left: opts.x + 'px',
           top: opts.y + 'px'
-        },
-        component: com
-      })
+        }, // 组件样式相关
+        component: com, // 组件
+        id: comId, // 组件ID 固定无法更改
+        name: `${config.name}_${this.comStartNum++}`// 组件名称 可更改
+      };
+      this.componentItems.push(option);
+
+      console.log(option);
+      
     },
     ...DragEvent,
     ...ViewCom.methods
   },
   components: {
-    'm-nav': Nav
+    'm-nav': Nav,
+    'm-conf-plane': ConfigPlane
+  },
+  watch: {
+    ...ViewCom.watch
   }
 }
 </script>

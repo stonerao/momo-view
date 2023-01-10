@@ -9,14 +9,17 @@ import Config from './config'
 import Methods from './methods'
 export default {
     defaultConfig: Config,
+    props: {
+        config: Object,
+        type: String
+    },  
     data() {
         return {
             style: {}
         }
     },
     created() {
-        this.instance = new Instance(Config);
- 
+        this.instance = new Instance(this.config || Config);
     },
     mounted() {
         this.instance.init({
@@ -25,7 +28,6 @@ export default {
     },
     methods: {
         ...Methods
-       
     }
 }
 </script>

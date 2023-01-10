@@ -1,9 +1,10 @@
 import BaseCom from '@/tools/baseCom'
 import * as echarts from 'echarts';
+import Config from './config'
 class InitCom extends BaseCom {
     constructor(config) {
         super();
-        
+        console.log(config)
         this.chart = null;
     }
 
@@ -12,9 +13,7 @@ class InitCom extends BaseCom {
     * @param {Object} config 基础配置
     */
     setDefaluteConfig(config) {
-        this.config = Utils.copy(config, {
-
-        });
+        this.config = Utils.copy(config, Config);
     }
 
     init(opts) {
@@ -49,7 +48,7 @@ class InitCom extends BaseCom {
     }
 
     mounted() {
-        console.log('mou')
+        console.log('mounted')
     }
 }
 
